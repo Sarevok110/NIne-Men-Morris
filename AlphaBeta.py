@@ -10,7 +10,6 @@ class evaluator():
  		self.evaluator = 0
  		self.board = []
 
-
 def alphaBetaPruning(board, depth, player1, alpha, beta, isStage1, heuristic):
 	finalEvaluation = evaluator()
 
@@ -118,7 +117,7 @@ def minimax(board, depth, player1, alpha, beta, isStage1, heuristic):
 	else:
 
 		if player1:
-			finalEvaluation.evaluator = heuristic(board, isStage1)
+			finalEvaluation.evaluator = heuristic(board, isStage1) 
 		else:
 			finalEvaluation.evaluator = heuristic(InvertedBoard(board), isStage1)
 
