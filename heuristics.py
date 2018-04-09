@@ -31,6 +31,7 @@ def potentialMillsHeuristic(board, isStage1):
 	'''
 
 	evaluation = 0
+	XDDDDDDDDD
 
 	numPlayerOneTokens = numOfValue(board, "1")
 	numPlayerTwoTokens = numOfValue(board, "2")
