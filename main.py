@@ -143,9 +143,8 @@ def handleEvents():
 		if e.type == QUIT:
 			return QUIT
 
-def AI_VS_AI(depth1, depth2, heuristic1, heuristic2):
-	pygame.init()
-	window = pygame.display.set_mode([800, 600])
+def AI_VS_AI(window, depth1, depth2, heuristic1, heuristic2):
+
 	board = []
 	for i in range(24):
 		board.append("X")
@@ -334,17 +333,17 @@ if __name__ == "__main__":
 
 	print("Welcome to Nine Mens Morris")
 	print("==========================")
-	print("1: Human vs AI")
-	print("2: AI vs AI")
-	print("Enter 1 or 2 to start")
-	while True:
-		gametype = eval(input(""))
-		if gametype == 1:
-			ai1_depth = int(input("Enter AI level: "))
-			HUMAN_VS_AI(ai1_depth, numberOfPiecesHeuristic)
-		if gametype == 2:
-			ai1_depth = int(input("Enter first AI level: "))
-			ai2_depth = int(input("Enter second AI level: "))
-			AI_VS_AI(ai1_depth, ai2_depth, potentialMillsHeuristic, numberOfPiecesHeuristic)
+	gametype = eval(input("Please enter 1 to start: "))
+
+	while gametype != 1:
+		gametype = eval(input("Please enter 1 to start: "))
+
+	pygame.init()
+	window = pygame.display.set_mode([800, 600])
+
+	if gametype == 1:
+		ai1_depth = int(input("Enter first AI level: "))
+		ai2_depth = int(input("Enter second AI level: "))
+		AI_VS_AI(window, ai1_depth, ai2_depth, potentialMillsHeuristic, numberOfPiecesHeuristic)
 
 	pygame.quit()
