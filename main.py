@@ -7,29 +7,27 @@ from pygame.locals import *
 
 alpha = float('-inf')
 beta = float('inf')
-depth = 3
-ai_depth = 4
 
 def boardOutput(board): # irrelevant after my modifications (need to reorder printing of array indices) ~Criss
 
-		print(board[0]+"(00)----------------------"+board[1]+"(01)----------------------"+board[2]+"(02)");
+		print(board[0]+"--------------------------"+board[1]+"--------------------------"+board[2]+"    ");
 		print("|                           |                           |");
-		print("|       "+board[8]+"(08)--------------"+board[9]+"(09)--------------"+board[10]+"(10)     |");
+		print("|       "+board[3]+"------------------"+board[4]+"------------------"+board[5]+"----     |");
 		print("|       |                   |                    |      |");
 		print("|       |                   |                    |      |");
-		print("|       |        "+board[16]+"(16)-----"+board[17]+"(17)-----"+board[18]+"(18)       |      |");
+		print("|       |        "+board[6]+"---------"+board[7]+"---------"+board[8]+"           |      |");
 		print("|       |         |                   |          |      |");
 		print("|       |         |                   |          |      |");
-		print(board[3]+"(03)---"+board[11]+"(11)----"+board[19]+"(19)               "+board[20]+"(20)----"+board[12]+"(12)---"+board[4]+"(04)");
+		print(board[9]+"-------"+board[10]+"--------"+board[11]+"                   "+board[12]+"--------"+board[13]+"-------"+board[14]+"    ");
 		print("|       |         |                   |          |      |");
 		print("|       |         |                   |          |      |");
-		print("|       |        "+board[21]+"(21)-----"+board[22]+"(22)-----"+board[23]+"(23)       |      |");
+		print("|       |        "+board[15]+"---------"+board[16]+"---------"+board[17]+"           |      |");
 		print("|       |                   |                    |      |");
 		print("|       |                   |                    |      |");
-		print("|       "+board[13]+"(13)--------------"+board[14]+"(14)--------------"+board[15]+"(15)     |");
+		print("|       "+board[18]+"------------------"+board[19]+"------------------"+board[20]+"         |");
 		print("|                           |                           |");
 		print("|                           |                           |");
-		print(board[5]+"(05)----------------------"+board[6]+"(06)----------------------"+board[7]+"(07)");
+		print(board[21]+"--------------------------"+board[22]+"--------------------------"+board[23]+"----");
 
 def drawBoard(window, board):
 	# Fields are represented in order as they appear from left to right and from top to bottom.
@@ -51,8 +49,6 @@ def drawBoard(window, board):
 		(525, 300),
 		(575, 300),
 		(300, 400),
-		(575, 300),
-		(300, 400),
 		(375, 400),
 		(475, 400),
 		(250, 450),
@@ -63,21 +59,93 @@ def drawBoard(window, board):
 		(575, 475)
 	]
 
-	evalColor = lambda val: (255, 0, 0) if val=="1" else ((0, 0, 255) if val=="2" else (0, 255, 0)) # player1: red; player2: blue; free: green
+	evalColor = lambda val: (255, 0, 0) if val=="1" else ((0, 0, 255) if val=="2" else((255, 251, 71) if val=='S'  else (0, 255, 0))) # player1: red; player2: blue; free: green
 
 	window.fill((255, 255, 255))
+
+	lineColor = (0, 0, 0)
+	pygame.draw.line(window, lineColor, positions[0], positions[2])
+	pygame.draw.line(window, lineColor, positions[3], positions[5])
+	pygame.draw.line(window, lineColor, positions[6], positions[8])
+	pygame.draw.line(window, lineColor, positions[6], positions[15])
+	pygame.draw.line(window, lineColor, positions[8], positions[17])
+	pygame.draw.line(window, lineColor, positions[15], positions[17])
+	pygame.draw.line(window, lineColor, positions[3], positions[18])
+	pygame.draw.line(window, lineColor, positions[5], positions[20])
+	pygame.draw.line(window, lineColor, positions[18], positions[20])
+	pygame.draw.line(window, lineColor, positions[0], positions[21])
+	pygame.draw.line(window, lineColor, positions[2], positions[23])
+	pygame.draw.line(window, lineColor, positions[21], positions[23])
+	pygame.draw.line(window, lineColor, positions[12], positions[14])
+	pygame.draw.line(window, lineColor, positions[9], positions[11])
+
 	for i in range(0, len(board)):
-		pygame.draw.rect(window, evalColor(board[i]), Rect(positions[i], (25, 25)))
+		pygame.draw.rect(window, (evalColor(board[i])), Rect(positions[i], (25, 25)))
 
 	pygame.display.update()
 
+	
+
+def checkClickPosition(x, y):
+	if (x >200 - 25) & (x < 200 + 25) & (y > 100 -25) & ( y < 100 + 25):
+		return 0
+	if (x >375 - 25) & (x < 375 + 25) & (y > 100 -25) & ( y < 100 + 25):
+		return 1
+	if (x >575 - 25) & (x < 575 + 25) & (y > 100 -25) & ( y < 100 + 25):
+		return 2
+	if (x >250 - 25) & (x < 250 + 25) & (y > 150 -25) & ( y < 150 + 25):
+		return 3
+	if (x >375 - 25) & (x < 375 + 25) & (y > 150 -25) & ( y < 150 + 25):
+		return 4
+	if (x >525 - 25) & (x < 525 + 25) & (y > 150 -25) & ( y < 150 + 25):
+		return 5
+	if (x >300 - 25) & (x < 300 + 25) & (y > 200 -25) & ( y < 200 + 25):
+		return 6
+	if (x >375 - 25) & (x < 375 + 25) & (y > 200 -25) & ( y < 200 + 25):
+		return 7
+	if (x >475 - 25) & (x < 475 + 25) & (y > 200 -25) & ( y < 200 + 25):
+		return 8
+	if (x >200 - 25) & (x < 200 + 25) & (y > 300 -25) & ( y < 300 + 25):
+		return 9
+	if (x >250 - 25) & (x < 250 + 25) & (y > 300 -25) & ( y < 300 + 25):
+		return 10
+	if (x >300- 25) & (x < 300 + 25) & (y > 300 -25) & ( y < 300 + 25):
+		return 11
+	if (x >475 - 25) & (x < 475 + 25) & (y > 300 -25) & ( y < 300 + 25):
+		return 12
+	if (x >525 - 25) & (x < 525 + 25) & (y > 300 -25) & ( y < 300 + 25):
+		return 13
+	if (x >575 - 25) & (x < 575 + 25) & (y > 300 -25) & ( y < 300 + 25):
+		return 14
+	if (x >300 - 25) & (x < 300 + 25) & (y > 400 -25) & ( y < 400 + 25):
+		return 15
+	if (x >375 - 25) & (x < 375 + 25) & (y > 400 -25) & ( y < 400 + 25):
+		return 16
+	if (x >475 - 25) & (x < 475 + 25) & (y > 400 -25) & ( y < 400 + 25):
+		return 17
+	if (x >250 - 25) & (x < 250 + 25) & (y > 450 -25) & ( y < 450 + 25):
+		return 18
+	if (x >375 - 25) & (x < 375 + 25) & (y > 450 -25) & ( y < 450 + 25):
+		return 19
+	if (x >525 - 25) & (x < 525 + 25) & (y > 450 -25) & ( y < 450 + 25):
+		return 20
+	if (x >200 - 25) & (x < 200 + 25) & (y > 475 -25) & ( y < 475 + 25):
+		return 21
+	if (x >375 - 25) & (x < 375 + 25) & (y > 475 -25) & ( y < 475 + 25):
+		return 22
+	if (x >575 - 25) & (x < 575 + 25) & (y > 475 -25) & ( y < 475 + 25):
+		return 23
+	return 0
+	
+	
 def handleEvents():
 	for e in pygame.event.get():
 		if e.type == QUIT:
 			return QUIT
 
-def AI_VS_AI(window, heuristic1, heuristic2):
-
+def AI_VS_AI(depth1, depth2, heuristic1, heuristic2):
+	pygame.init()
+	window = pygame.display.set_mode([800, 600])
 	board = []
 	for i in range(24):
 		board.append("X")
@@ -92,7 +160,7 @@ def AI_VS_AI(window, heuristic1, heuristic2):
 			break
 
 		#boardOutput(board)
-		evalBoard = alphaBetaPruning(board, ai_depth, True, alpha, beta, True, heuristic1)
+		evalBoard = alphaBetaPruning(board, depth1, True, alpha, beta, True, heuristic1)
 
 		if evalBoard.evaluator == float('inf'):
 			print("AI Bot 1 has won!")
@@ -102,7 +170,7 @@ def AI_VS_AI(window, heuristic1, heuristic2):
 			board = evalBoard.board
 
 		#boardOutput(board)
-		evalBoard = alphaBetaPruning(board, ai_depth, False, alpha, beta, True, heuristic2)
+		evalBoard = alphaBetaPruning(board, depth2, False, alpha, beta, True, heuristic2)
 
 		if evalBoard.evaluator == float('-inf'):
 			print("AI Bot 2 has won!")
@@ -121,9 +189,7 @@ def AI_VS_AI(window, heuristic1, heuristic2):
 	while True:
 		if handleEvents() == QUIT:
 			break
-
-		#boardOutput(board)
-		evalBoard = alphaBetaPruning(board, ai_depth, True, alpha, beta, False, heuristic1)
+		evalBoard = alphaBetaPruning(board, depth1, True, alpha, beta, False, heuristic1)
 
 		if evalBoard.evaluator == float('inf'):
 			print("AI Bot 1 has won!")
@@ -132,7 +198,7 @@ def AI_VS_AI(window, heuristic1, heuristic2):
 			board = evalBoard.board
 
 		#boardOutput(board)
-		evaluation = alphaBetaPruning(board, ai_depth, False, alpha, beta, False, heuristic2)
+		evaluation = alphaBetaPruning(board, depth2, False, alpha, beta, False, heuristic2)
 
 		if evaluation.evaluator == float('-inf'):
 			print("AI Bot 2 has won")
@@ -143,139 +209,142 @@ def AI_VS_AI(window, heuristic1, heuristic2):
 		drawBoard(window, board)
 	drawBoard(window, board)
 
-def HUMAN_VS_AI(heuristic_stage1, heuristic_stage23):
-
+	
+def HUMAN_VS_AI(depth, heuristic):
+	pygame.init()
+	window = pygame.display.set_mode([800, 600])
 	board = []
 	for i in range(24):
 		board.append("X")
 
 	evaluation = evaluator()
-
 	for i in range(9):
-
-		boardOutput(board)
-		finished = False
-		while not finished:
-			try:
-
-				pos = int(input("\nPlace '1' piece: "))
-
-				if board[pos] == "X":
-
-					board[pos] = '1'
-					if isCloseMill(pos, board):
-						itemPlaced = False
-						while not itemPlaced:
-							try:
-
-								pos = int(input("\nRemove '2' piece: "))
-
-								if board[pos] == "2" and not isCloseMill(pos, board) or (isCloseMill(pos, board) and getNumberOfPieces(board, "1") == 3):
-									board[pos] = "X"
-									itemPlaced = True
-								else:
-									print("Invalid position")
-
-							except Exception:
-								print("Input was either out of bounds or wasn't an integer")
-
-					finished = True
-
-				else:
-					print("There is already a piece there")
-
-			except Exception:
-				print("Couldn't get the input value")
-
-		boardOutput(board)
-		evalBoard = alphaBetaPruning(board, depth, False, alpha, beta, True, heuristic_stage1)
+		drawBoard(window, board)
+		moved = False
+		while not moved:
+			event = pygame.event.wait()
+			if event.type == pygame.MOUSEBUTTONDOWN:
+				if event.button == 1:
+					x = event.pos[0]
+					y = event.pos[1]
+					position = checkClickPosition(x,y)
+					if board[position] == 'X':
+						board[position] = '1'
+						drawBoard(window, board)
+						moved = True
+						if checkMillFormation(position, board, '1'):
+							killed = False
+							while not killed:
+								event = pygame.event.wait()
+								if event.type == pygame.MOUSEBUTTONDOWN:
+									if event.button == 1:
+										xKill = event.pos[0]
+										yKill = event.pos[1]
+										killPosition = checkClickPosition(xKill,yKill)
+										if board[killPosition] == '2':
+											board[killPosition] = 'X'
+											killed = True
+											pygame.event.clear()
+											drawBoard(window, board)
+						else:
+							pygame.event.clear()
+			if event.type == pygame.QUIT:
+				break
+		
+		evalBoard = alphaBetaPruning(board, depth, False, alpha, beta, True, heuristic)
 
 		if evalBoard.evaluator == float('-inf'):
-			print("You Lost")
+			print("You Win")
 			exit(0)
 		else:
 			board = evalBoard.board
-
-	endStagesFinished = False
-	while not endStagesFinished:
-
-		boardOutput(board)
-
-		#Get the users next move
-		userHasMoved = False
-		while not userHasMoved:
-			try:
-				pos = int(input("\nMove '1' piece: "))
-
-				while board[pos] != '1':
-					pos = int(input("\nMove '1' piece: "))
-
-				userHasPlaced = False
-				while not userHasPlaced:
-
-					newPos = int(input("'1' New Location: "))
-
-					if board[newPos] == "X":
-						board[pos] = 'X'
-						board[newPos] = '1'
-
-						if isCloseMill(newPos, board):
-
-							userHasRemoved = False
-							while not userHasRemoved:
-								try:
-
-									pos = int(input("\nRemove '2' piece: "))
-
-									if board[pos] == "2" and not isCloseMill(pos, board) or (isCloseMill(pos, board) and getNumberOfPieces(board, "1") == 3):
-										board[pos] = "X"
-										userHasRemoved = True
-									else:
-										print("Invalid position")
-								except Exception:
-									print("Error while accepting input")
-
-						userHasPlaced = True
-						userHasMoved = True
-
-					else:
-						print("You cannot move there")
-
-			except Exception:
-				print("You cannot move there")
-
-		if getEvaluationStage23(board) == float('inf'):
-			print("You Win!")
-			exit(0)
-
-		boardOutput(board)
-
-		evaluation = alphaBetaPruning(board, depth, False, alpha, beta, False, heuristic_stage23)
-
+	print ("FAZA 2")
+	notEnded = True
+	while notEnded:
+		drawBoard(window, board)
+		moved = False
+		while not moved:
+			event = pygame.event.wait()
+			if event.type == pygame.MOUSEBUTTONDOWN:
+				if event.button == 1:
+					x = event.pos[0]
+					y = event.pos[1]
+					position = checkClickPosition(x,y)
+					if board[position] == '1':
+						isPossible = False
+						possibilityCheck = adjacentLocations(position)
+						for i in possibilityCheck:
+							if board[i] == 'X':
+								isPossible = True
+						if isPossible:
+							board[position] = 'S'
+							drawBoard(window, board)
+							while not moved:
+								event = pygame.event.wait()
+								if event.type == pygame.MOUSEBUTTONDOWN:
+									if event.button == 1:
+										x = event.pos[0]
+										y = event.pos[1]
+										position2 = checkClickPosition(x,y)
+										for i in possibilityCheck:
+											if i == position2:
+												if board[i] == 'X':
+													moved = True
+										if moved == True:
+											board[position2] = '1'
+											board[position] = 'X'
+											if checkMillFormation(position2, board, '1'):
+												killed = False
+												while not killed:
+													event = pygame.event.wait()
+													if event.type == pygame.MOUSEBUTTONDOWN:
+														if event.button == 1:
+															xKill = event.pos[0]
+															yKill = event.pos[1]
+															killPosition = checkClickPosition(xKill,yKill)
+															if board[killPosition] == '2':
+																board[killPosition] = 'X'
+																killed = True
+																moved = True
+																pygame.event.clear()
+																drawBoard(window, board)
+											
+						
+						else:
+							pygame.event.clear()
+						
+						
+			if event.type == pygame.QUIT:
+				break
+		drawBoard(window, board)
+		evaluation = alphaBetaPruning(board, depth, False, alpha, beta, False, heuristic)
+		victory = True
 		if evaluation.evaluator == float('-inf'):
 			print("You Lost")
 			exit(0)
 		else:
 			board = evaluation.board
+		
 
+	
+	
+	
 
 if __name__ == "__main__":
 
 	print("Welcome to Nine Mens Morris")
 	print("==========================")
-	print("1. Is Human vs AI")
-	print("2. Is AI vs AI")
-	gametype = eval(input("Please enter 1 or 2: "))
-
-	while gametype != 1 and gametype != 2:
-		gametype = eval(input("Please enter 1 or 2: "))
-
-	pygame.init()
-	window = pygame.display.set_mode([800, 600])
-
-	if gametype == 1: # HUMAN_VS_AI not playable for now
-		pass # HUMAN_VS_AI(numberOfPiecesHeuristic, AdvancedHeuristic)
-	elif gametype == 2:
-		AI_VS_AI(window, AdvancedHeuristic, AdvancedHeuristic)
+	print("1: Human vs AI")
+	print("2: AI vs AI")
+	print("Enter 1 or 2 to start")
+	while True:
+		gametype = eval(input(""))
+		if gametype == 1:
+			ai1_depth = int(input("Enter AI level: "))
+			HUMAN_VS_AI(ai1_depth, numberOfPiecesHeuristic)
+		if gametype == 2:
+			ai1_depth = int(input("Enter first AI level: "))
+			ai2_depth = int(input("Enter second AI level: "))
+			AI_VS_AI(ai1_depth, ai2_depth, potentialMillsHeuristic, numberOfPiecesHeuristic)
 
 	pygame.quit()

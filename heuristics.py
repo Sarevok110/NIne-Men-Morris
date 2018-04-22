@@ -4,7 +4,7 @@ def numberOfPiecesHeuristic(board, isStage1):
 	'''
 	Heuristic that looks at the number of pieces on the board
 	'''
-	
+
 	numPlayerOneTokens = numOfValue(board, "1")
 	numPlayerTwoTokens = numOfValue(board, "2")
 
@@ -31,7 +31,6 @@ def potentialMillsHeuristic(board, isStage1):
 	'''
 
 	evaluation = 0
-	XDDDDDDDDD
 
 	numPlayerOneTokens = numOfValue(board, "1")
 	numPlayerTwoTokens = numOfValue(board, "2")
@@ -68,37 +67,6 @@ def potentialMillsHeuristic(board, isStage1):
 			evaluation += 100 * potentialMillsPlayer2
 
 	return evaluation
-
-def numberOfMoveablePiecesHeuristic(board, isStage1):
-	'''
-	Heuristic that looks at the number of pieces and if they can move
-	'''
-	
-	evaluation = 0
-
-	numPlayerOneTokens = numOfValue(board, "1")
-	numPlayerTwoTokens = numOfValue(board, "2")
-
-	moveablePiecesPlayer1 = 0
-	moveablePiecesPlayer2 = 0
-
-	if not isStage1:
-		movablePiecesBlack = len(stage23Moves(board))
-
-	if not isStage1:
-		if numPlayerTwoTokens <= 2 or movablePiecesBlack == 0:
-			evaluation = float('inf')
-		elif numPlayerOneTokens <= 2:
-			evaluation = float('-inf')
-		else:
-			evaluation = 100 * (numPlayerOneTokens - numPlayerTwoTokens)
-			evaluation -= 50 * movablePiecesBlack
-	else:
-		evaluation = 100 * (numPlayerOneTokens - numPlayerTwoTokens)
-		evaluation -= 50 * moveablePiecesPlayer2
-
-	return evaluation
-
 
 def AdvancedHeuristic(board, isStage1):
 	'''
